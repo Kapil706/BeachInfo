@@ -1,7 +1,6 @@
 package com.nasaspaceapps.sudo.beachinfo;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -36,9 +35,6 @@ public class MyLocationListener implements LocationListener {
 
         //editLocation.setText("");
         //pb.setVisibility(View.INVISIBLE);
-        Toast.makeText(context,
-                "Location changed: Lat: " + loc.getLatitude() + " Lng: "
-                        + loc.getLongitude(), Toast.LENGTH_SHORT).show();
         longitude = "Longitude: " + loc.getLongitude();
         Log.v("Longitude", longitude);
         latitude = "Latitude: " + loc.getLatitude();
@@ -64,9 +60,11 @@ public class MyLocationListener implements LocationListener {
       //  editLocation.setText(s)
                 Log.e("Location", " "+ s);
 
-                geoLocation location = new geoLocation();
+                GeoLocation location = new GeoLocation();
                 location.setMlatitude(latitude);
                 location.setMlongitude(longitude);
+                setLatitude(latitude);
+                setLongitude(longitude);
 
         Log.e("DATA", "MyLocation Listner The Data I fetched" + location.getMlongitude());
         Log.e("DATA", "MyLocation Listner The Data I fetched" + location.getMlatitude());

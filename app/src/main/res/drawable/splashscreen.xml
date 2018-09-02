@@ -7,7 +7,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/policeman"/>
+            android:src="@drawable/beach"/>
     </item>
 
 </layer-list>

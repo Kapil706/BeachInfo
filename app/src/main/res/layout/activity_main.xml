@@ -11,21 +11,79 @@
     <FrameLayout
         android:id="@+id/content_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
         <ProgressBar
             android:id="@+id/progressbarLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="150dp"
             android:layout_marginTop="100dp"
-            android:visibility="visible" />
+            android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/gifImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="56dp"/>
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:layout_below="@+id/gifImage"
+            android:text="Lets Go To The Beach"
+            android:textSize="40dp"
+            android:layout_centerInParent="true"
+            android:textAlignment="center"/>
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv2"
+        android:textSize="18dp"
+        android:text="1. Open the UV panel to know the current radiation "
+        android:textColor="#fff"/>
+    <TextView
+        android:id="@+id/tv4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv3"
+        android:layout_marginTop="20dp"
+        android:textSize="18dp"
+        android:text="2. Open the HAB Panel to identify an HAB in the area "
+        android:textColor="#fff"/>
+
+    <TextView
+        android:id="@+id/tv5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv4"
+        android:layout_marginTop="20dp"
+        android:textSize="18dp"
+        android:text="3. Open the Skintype panel to know your skintype. "
+        android:textColor="#fff"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="Made with love by team SUDO"
+        android:layout_below="@id/tv5"
+        android:layout_alignParentRight="true"/>
+
+
+
+</RelativeLayout>
     </FrameLayout>
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->

@@ -1,9 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UVActivity">
+    tools:context=".UVActivity"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:title="UV Details"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+    <ProgressBar
+        android:id="@+id/UVProgress"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:id="@+id/UVProgressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Getting Your Location
+Please Wait..."
+        android:textAlignment="center"
+        />
+
+    <LinearLayout
+        android:id="@+id/UVView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/UV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="40dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/noID1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Max UV Data"
+        android:textSize="20dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="inherit"
+        />
+    <TextView
+        android:id="@+id/uvMax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="30dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:id="@+id/noID2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Max UV Time"
+        android:textSize="20dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="inherit"
+        />
+
+    <TextView
+        android:id="@+id/maxUvTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="30dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:id="@+id/noID3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Current Ozone Exposure"
+        android:textSize="20dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="inherit"
+        />
+
+    <TextView
+        android:id="@+id/ozoneExpose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="30dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/noID4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Safe Exposure Time"
+        android:textSize="20dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/safeExpose1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/safeExpose2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/safeExpose3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/safeExpose4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/safeExpose5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/safeExpose6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+
+
+    <TextView
+        android:id="@+id/noID5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sun Position (Azimuth, Altitude)"
+        android:textSize="20dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="inherit"
+        />
+    <TextView
+        android:id="@+id/sunAzimuth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+    <TextView
+        android:id="@+id/sunAltitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/updating"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        />
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>

@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -22,7 +23,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity {
     private final int MY_PERMISSIONS = 124;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private String mainlogitude;
     private String mCity;
     GPSTracker gps;
+    private ImageView imageView;
 
 
 
@@ -45,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imageView = findViewById(R.id.gifImage);
 
         //GPS Location Location Manager
         locationManager = (LocationManager)
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             double longitude = gps.getLongitude();
 
             // \n is for new line
-            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
 
             Log.e("Data", "MainActivity: YESSSSSSS"+ String.valueOf(latitude) +" "+ String.valueOf(longitude));
             saveData();
@@ -104,14 +110,30 @@ public class MainActivity extends AppCompatActivity {
                         // For example, swap UI fragments here
                         switch (menuItem.getItemId()) {
                             case R.id.nav_UV:
+                                Bundle bundle = new Bundle();
+                                bundle.putString("latitude", String.valueOf(gps.getLatitude()));
+                                bundle.putString("longitude", String.valueOf(gps.getLongitude()));
                                 Intent i = new Intent(MainActivity.this, UVActivity.class);
                                 startActivity(i);
+                                break;
+
+                            case R.id.nav_HAB:
+                                Intent intent =new Intent(MainActivity.this, HABactivity.class);
+                                startActivity(intent);
+                                break;
+
+                            case R.id.nav_skin:
+                                Intent skin = new Intent(MainActivity.this, SkinTypeActivity.class);
+                                startActivity(skin);
+
+
 
                         }
 
                         return true;
                     }
                 });
+        Glide.with(this).load(R.drawable.agro).into(imageView);
     }
 
     @Override
@@ -242,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
         shareEdit.putString("longitude", String.valueOf(gps.getLongitude()));
         shareEdit.commit();
     }
+
 
     public String getMainlatitude() {
         return mainlatitude;

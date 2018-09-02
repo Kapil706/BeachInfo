@@ -8,10 +8,10 @@
             android:id="@+id/nav_HAB"
             android:title="HAB" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:title="item3" />
+            android:id="@+id/nav_skin"
+            android:title="Skin Types" />
         <item
             android:id="@+id/nav_manage"
-            android:title="item4" />
+            android:title="About" />
     </group>
 </menu>
