@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:allowBackup="true"
@@ -27,6 +28,8 @@
         <activity android:name=".UVActivity" />
         <activity android:name=".HABactivity" />
         <activity android:name=".SkinTypeActivity"></activity>
+
+        <service android:name=".GPSTracker" />
     </application>
 
 </manifest>

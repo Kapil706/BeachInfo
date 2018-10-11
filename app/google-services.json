@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "683755584002",
+    "firebase_url": "https://beachinfo-ee3e0.firebaseio.com",
+    "project_id": "beachinfo-ee3e0",
+    "storage_bucket": "beachinfo-ee3e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683755584002:android:0c18f098424c0bae",
+        "android_client_info": {
+          "package_name": "com.nasaspaceapps.sudo.beachinfo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683755584002-5rfpkorc9up63i19g6bk9dl84uv831t0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7__eQTEctdOrzchG-WHDZEAw4ejEPXGM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

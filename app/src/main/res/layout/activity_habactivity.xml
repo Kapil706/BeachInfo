@@ -40,10 +40,12 @@
         android:onClick="secondaryModel"
         android:background="@color/colorPrimary"
         android:text="HAB Detection"
+        android:textColor="#000"
         android:textAlignment="textStart"
         android:textStyle="bold"
         android:textSize="22dp"
         android:id="@+id/algal"
+        android:enabled="false"
         />
 
     <Button

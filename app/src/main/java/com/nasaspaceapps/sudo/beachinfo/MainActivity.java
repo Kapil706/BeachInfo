@@ -1,6 +1,7 @@
 package com.nasaspaceapps.sudo.beachinfo;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,7 +32,7 @@ import com.bumptech.glide.Glide;
 public class MainActivity extends AppCompatActivity {
     private final int MY_PERMISSIONS = 124;
 
-    Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+    Intent phoneIntent = new Intent(Intent.ACTION_CALL);
     LocationManager locationManager;
 
     private String mainlatitude;
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.agro).into(imageView);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -176,22 +178,25 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) && (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) && (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED)) {
 
             Log.i("1", "Permission is not granted");
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.CAMERA) && (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION))) {
+                    Manifest.permission.ACCESS_FINE_LOCATION)) && (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CALL_PHONE))) {
                 Log.i("REQUEST", "Requesting permission....");
                 ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION},
+                        new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE },
                         MY_PERMISSIONS);
 
 
             } else {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION},
+                        new String[]{Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE},
                         MY_PERMISSIONS);
 
             }

@@ -75,6 +75,7 @@ public class GPSTracker extends Service implements LocationListener {
                         // for ActivityCompat#requestPermissions for more details.
 
                     }
+
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,

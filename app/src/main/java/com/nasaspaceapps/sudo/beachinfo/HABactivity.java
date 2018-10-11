@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -37,17 +38,27 @@ import com.google.firebase.ml.custom.model.FirebaseLocalModelSource;
 import org.tensorflow.lite.Interpreter;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Objects;
 
 public class HABactivity extends AppCompatActivity {
 
     private final int MY_PERMISSIONS=124;
     private final int REQUEST_IMAGE_CAPTURE =201;
+    private final int DIM_IMG_SIZE_X = 224;
+    private final int DIM_IMG_SIZE_Y = 224;
+    private final int DIM_BATCH_SIZE = 1;
+    private final int DIM_PIXEL_SIZE  = 3;
 
+    //private ByteBuffer imgData =null; Defined in convert to byte array method
+    private int[] intValues = new int[DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y];
     private Bitmap imageBitmap;
     private TextView tv;
     private TextView tv2;
@@ -71,37 +82,57 @@ public class HABactivity extends AppCompatActivity {
     }
 
     public void save(View v){
+        //This might not be required
         saveImage(this, imageBitmap, "image.txt");
+
     }
 
-    public void modelrunner() throws FirebaseMLException {
-        FirebaseLocalModelSource localSource = new FirebaseLocalModelSource.Builder("my_local_model")
-                .setAssetFilePath("mymodel.tflite")  // Or setFilePath if you downloaded from your host
-                .build();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            FirebaseModelManager.getInstance().registerLocalModelSource(localSource);
+    public void model(View v){
+        try {
+            modelrunner();
+        } catch (FirebaseMLException e) {
+            e.printStackTrace();
         }
 
-        FirebaseModelOptions options = new FirebaseModelOptions.Builder()
-                .setCloudModelName("my_cloud_model")
-                .setLocalModelName("my_local_model")
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+        }
+    }
+
+
+
+    //The magic happens here
+    public void modelrunner() throws FirebaseMLException {
+        FirebaseLocalModelSource localSource = new FirebaseLocalModelSource.Builder("hab")
+                .setAssetFilePath("hab.tflite")  // Or setFilePath if you downloaded from your host
                 .build();
 
-            FirebaseModelInterpreter firebaseInterpreter =
-                    FirebaseModelInterpreter.getInstance(options);
+        FirebaseModelManager.getInstance().registerLocalModelSource(localSource);
 
 
+        FirebaseModelOptions options = new FirebaseModelOptions.Builder()
+                .setLocalModelName("hab")
+                .build();
 
-            FirebaseModelInputOutputOptions inputOutputOptions =
-                    new FirebaseModelInputOutputOptions.Builder()
-                            .setInputFormat(0, FirebaseModelDataType.BYTE, new int[]{1, 640, 480, 3})
-                            .setOutputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 1000})
-                            .build();
+        FirebaseModelInterpreter firebaseInterpreter =
+                FirebaseModelInterpreter.getInstance(options);
 
 
-        byte[][][][] input = new byte[1][640][480][3];
+        FirebaseModelInputOutputOptions inputOutputOptions =
+                new FirebaseModelInputOutputOptions.Builder()
+                        .setInputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 224, 224, 3})
+                        .setOutputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 1000})
+                        .build();
+
+
+        //byte[][][][] input = convertBitmapToByteBuffer(loadImageBitmap(this, "image.txt"));//new byte[1][640][480][3];
         FirebaseModelInputs inputs = new FirebaseModelInputs.Builder()
-                .add(input)  // add() as many input arrays as your model requires
+                .add(convertBitmapToByteBuffer(imageBitmap))  // add() as many input arrays as your model requires
                 .build();
         Task<FirebaseModelOutputs> result =
                 firebaseInterpreter.run(inputs, inputOutputOptions)
@@ -110,7 +141,6 @@ public class HABactivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(FirebaseModelOutputs result) {
 
-                                        getModel(result);
                                     }
                                 })
                         .addOnFailureListener(
@@ -121,48 +151,8 @@ public class HABactivity extends AppCompatActivity {
                                     }
                                 });
 
-
-
     }
 
-    public void model(View v){
-        final ProgressBar progressBar = findViewById(R.id.modelProgress);
-        progressBar.setVisibility(View.VISIBLE);
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                    tv.setText("NOT ALGAL");
-                    count++;
-                    progressBar.setVisibility(View.INVISIBLE);
-
-
-            }
-        }, 6000);
-
-
-
-    }
-
-    public void secondaryModel(View v){
-        final ProgressBar progressBar = findViewById(R.id.modelProgress);
-        progressBar.setVisibility(View.VISIBLE);
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tv.setText("ALGAL");
-                count++;
-                progressBar.setVisibility(View.INVISIBLE);
-
-
-            }
-        }, 6000);
-
-
-    }
 
     //SAVE AND RETRIVAL IMAGE [NO ISSUE]
     //---------------------------------------------------------------------------------------------
@@ -179,18 +169,8 @@ public class HABactivity extends AppCompatActivity {
         }
     }
 
-    public void byteImage(Context context, Bitmap bitmap, String filename){
-        FileOutputStream fileOutputStream;
-        try
-        {
-            fileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
-            fileOutputStream.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
 
     public void beginPermission(){
@@ -260,6 +240,8 @@ public class HABactivity extends AppCompatActivity {
             }
         }
     }
+
+    //This function is redundant
     public Bitmap loadImageBitmap(Context context,String filename){
         FileInputStream fileInputStream;
         Bitmap bitmap = null;
@@ -273,8 +255,82 @@ public class HABactivity extends AppCompatActivity {
         return bitmap;
     }
 
+    /** Writes Image data into a {@code ByteBuffer}. */
+    private ByteBuffer convertBitmapToByteBuffer(Bitmap bitmap) {
+        /**
+        if (imgData == null) {
+            Log.e("ERROR", "IMAGE DATA IS NULL");
+            return null;
+        }
+         **/
+        ByteBuffer imgData =
+                ByteBuffer.allocateDirect(
+                        DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
+        imgData.order(ByteOrder.nativeOrder());
+//        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y,
+//                true);
+        imgData.rewind();
+        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+        // Convert the image to floating point.
+        int pixel = 0;
+       // long startTime = SystemClock.uptimeMillis();
+        for (int i = 0; i < DIM_IMG_SIZE_X; ++i) {
+            for (int j = 0; j < DIM_IMG_SIZE_Y; ++j) {
+                final int val = intValues[pixel++];
+                imgData.putFloat((val >> 16) & 0xFF);
+                imgData.putFloat(((val >> 8) & 0xFF));
+                imgData.putFloat((val & 0xFF));
+            }
+            return imgData;
+        }
 
-    //Read file stream
+        return imgData;
+
+
+//        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(BATCH_SIZE * inputSize * inputSize * PIXEL_SIZE);
+//        byteBuffer.order(ByteOrder.nativeOrder());
+//        int[] intValues = new int[inputSize * inputSize];
+//        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+//        int pixel = 0;
+//        for (int i = 0; i < inputSize; ++i) {
+//            for (int j = 0; j < inputSize; ++j) {
+//                final int val = intValues[pixel++];
+//                byteBuffer.put((byte) ((val >> 16) & 0xFF));
+//                byteBuffer.put((byte) ((val >> 8) & 0xFF));
+//                byteBuffer.put((byte) (val & 0xFF));
+//            }
+//        }
+//        return byteBuffer;
+
+    }
+
+    /**
+    private void doRecognize(Bitmap image) {
+        // Allocate space for the inference results
+        float[][] confidencePerLabel = new float[1][mLabels.size()];
+        // Allocate buffer for image pixels.
+        int[] intValues = new int[300 * 300];
+        ByteBuffer imgData = ByteBuffer.allocateDirect(1*300*300*3* 4);
+        imgData.order(ByteOrder.nativeOrder());
+
+        // Read image data into buffer formatted for the TensorFlow model
+        TensorFlowHelper.convertBitmapToByteBuffer_float32(image, intValues, imgData);
+
+        // Run inference on the network with the image bytes in imgData as input,
+        // storing results on the confidencePerLabel array.
+        mTensorFlowLite.run(imgData, confidencePerLabel);
+
+        // Get the results with the highest confidence and map them to their labels
+        Collection<Recognition> results =
+                TensorFlowHelper.getBestResults(confidencePerLabel, mLabels);
+        // Report the results with the highest confidence
+        onPhotoRecognitionReady(results);
+    }
+     **/
+
+
+
+        //Read file stream
     private String readFromFile(String filename) throws FileNotFoundException, IOException {
         String readString = "";
 
@@ -289,12 +345,8 @@ public class HABactivity extends AppCompatActivity {
         return stringBuilder.toString();
     }
 
-    public void getModel(FirebaseModelOutputs result){
-        try {
-
-            modelrunner();
-        } catch (FirebaseMLException e) {
-            e.printStackTrace();
-        }
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+
 }
