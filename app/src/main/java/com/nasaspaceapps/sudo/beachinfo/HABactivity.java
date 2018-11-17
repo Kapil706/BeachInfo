@@ -126,7 +126,7 @@ public class HABactivity extends AppCompatActivity {
         FirebaseModelInputOutputOptions inputOutputOptions =
                 new FirebaseModelInputOutputOptions.Builder()
                         .setInputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 224, 224, 3})
-                        .setOutputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 1000})
+                        .setOutputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 2})
                         .build();
 
 
@@ -265,7 +265,7 @@ public class HABactivity extends AppCompatActivity {
          **/
         ByteBuffer imgData =
                 ByteBuffer.allocateDirect(
-                        DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
+                        DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE*4);
         imgData.order(ByteOrder.nativeOrder());
 //        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y,
 //                true);

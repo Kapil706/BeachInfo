@@ -203,12 +203,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(MainActivity.this, "THANKS", Toast.LENGTH_LONG);
             //Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            LocationListener locationListener = new MyLocationListener(this);
-            locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-
-
-
+//            LocationListener locationListener = new MyLocationListener(this);
+//            locationManager.requestLocationUpdates(
+//                    LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
 
         }
     }
@@ -224,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.i("1", "Permission is granted");
                     //Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    LocationListener locationListener = new MyLocationListener(this);
+                    //LocationListener locationListener = new MyLocationListener(this);
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
@@ -236,8 +233,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
-                    locationManager.requestLocationUpdates(
-                            LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+//                    locationManager.requestLocationUpdates(
+//                            LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
 
                 } else {
                     Log.i("1", "Permission is again not granted");
